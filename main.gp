@@ -7,25 +7,14 @@ codf27(s) = [if(x==32,0,u27^(x-97))|x<-Vec(Vecsmall(s)),x==32||x>=97&&x<=122];
  * Donc un élément de la forme u27^k se décode en faisant k+97=x.
 */
 
-/*
-\\Essai infructueux reprenant la syntaxe pour l'encodage ...
-\\A comprendre !
-findPow(x)={
-   k=-1;
-   for(i=0,25, if(x==u27^i,k=i));
-   k;
-}
-decodf27(s) = [ if(findPow(x)==-1,32,findPow(x)) | x<-Vec(s), x==0];
-*/
-
 
 decode(s)={
+  my(v);
   v= vector(#s);
   vector(#s,i, for(k=0,25, if(s[i]==0, v[i]=32,if(s[i]==u27^k, v[i]=k+97)) ) );
   v;
 }
 decodf27(s)=ascii2str(decode(s));
-
 
 
 /* ****************************************************************************** */
@@ -40,6 +29,7 @@ decodf27(s)=ascii2str(decode(s));
 */
 
 suite_rec_lineaire(u_0,annul,nb) = {
+  my(d, v);
   if(type(annul)=="t_POL",annul=Vecrev(annul));
   d = #annul - 1;
   if(type(u_0)=="t_POL",u_0=Vecrev(u,d));
@@ -74,6 +64,7 @@ ExpMat(M,e) = {
 */
 
 IterN(M,n)={
+	my(f);
 	f=factor(n);
 	for(i=1,matsize(f)[1], M=ExpMat(M,f[i,1]^f[i,2]));
 	M;
